@@ -1,0 +1,33 @@
+name: first workflow
+
+on:
+  workflow_dispatch:
+
+jobs:
+  firstJob:
+    runs-on: ubuntu-latest
+    steps:
+      - name: firstJob script
+        shell: bash
+        run: echo Hello World! This is the first job
+      - name: Checkout
+        uses: actions/checkout@v5.0.0
+      - name: Print to Log
+        id: print-to-log
+        uses: actions/hello-world-javascript-action@main
+        with:
+          who-to-greet: ${{ github.actor }}
+      - name: time
+        run: |
+          echo "Greeting at ${{ steps.print-to-log.outputs.time }}"
+          
+          
+  secondJob:
+    runs-on: ubuntu-latest
+    steps:
+      - name: secondJob Script
+        shell: bash
+        run: |
+          echo this is the second job
+          echo year 2025
+          echo nice to see you
