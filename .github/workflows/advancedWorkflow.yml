@@ -1,5 +1,8 @@
 name: first workflow
 
+env:
+  WORKFLOW_VAR: "This is workflow level variable"
+
 on:
   workflow_dispatch:
 
@@ -23,7 +26,10 @@ jobs:
           
           
   secondJob:
+    needs: firstJob
     runs-on: ubuntu-latest
+    env:
+      JOB_VAR: "This is a job variable"
     steps:
       - name: secondJob Script
         shell: bash
@@ -31,3 +37,15 @@ jobs:
           echo this is the second job
           echo year 2025
           echo nice to see you
+      - name: environment variables
+        env:
+          STEP_VAR: "This is a step variable"
+        run: |
+          echo $WORKFLOW_VAR
+          echo $JOB_VAR
+          echo $STEP_VAR
+          echo "The following is a secret: ${{ secrets.SOME_SECRET }}"
+          echo "The following are default environment variables"
+          echo $GITHUB_ACTOR
+          echo $GITHUB_JOB
+          echo $GITHUB_REF
